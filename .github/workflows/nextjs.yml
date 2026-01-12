@@ -31,8 +31,27 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
       
+      - name: Disable API routes for static export
+        run: |
+          if [ -d "app/api" ]; then
+            mv app/api app/api.disabled
+            echo "API routes disabled for static export"
+          fi
+      
       - name: Build
         run: npm run build
+      
+      - name: Check build output
+        run: |
+          echo "Checking for out directory..."
+          ls -la
+          if [ -d "out" ]; then
+            echo "✓ out directory exists"
+            ls -la out
+          else
+            echo "✗ out directory not found"
+            exit 1
+          fi
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
