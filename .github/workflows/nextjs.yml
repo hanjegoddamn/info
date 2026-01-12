@@ -31,26 +31,75 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
       
-      - name: Disable API routes for static export
+      - name: Remove API routes for static export
         run: |
           if [ -d "app/api" ]; then
-            mv app/api app/api.disabled
-            echo "API routes disabled for static export"
+            rm -rf app/api
+            echo "API routes removed for static export"
+          fi
+          # Also check for api.disabled and remove it
+          if [ -d "app/api.disabled" ]; then
+            rm -rf app/api.disabled
+            echo "Disabled API routes removed"
+          fi
+      
+      - name: Verify next.config.js
+        run: |
+          echo "Checking next.config.js..."
+          cat next.config.js
+          if grep -q "output: 'export'" next.config.js; then
+            echo "✓ Static export is configured"
+          else
+            echo "✗ Static export not configured!"
+            exit 1
           fi
       
       - name: Build
-        run: npm run build
+        run: |
+          echo "Next.js version:"
+          npx next --version
+          echo "Building..."
+          npm run build 2>&1 | tee build.log
+          echo "Build exit code: $?"
+          echo "Last 50 lines of build output:"
+          tail -50 build.log || echo "No build.log"
       
       - name: Check build output
         run: |
           echo "Checking for out directory..."
-          ls -la
           if [ -d "out" ]; then
             echo "✓ out directory exists"
-            ls -la out
+            echo "Contents:"
+            ls -la out | head -20
+            echo "Total files:"
+            find out -type f | wc -l
           else
             echo "✗ out directory not found"
-            exit 1
+            echo "Current directory contents:"
+            ls -la
+            echo "Checking .next directory structure:"
+            if [ -d ".next" ]; then
+              ls -la .next/
+              echo "Checking for .next/standalone:"
+              ls -la .next/standalone 2>/dev/null || echo "No standalone"
+              echo "Checking for .next/static:"
+              ls -la .next/static 2>/dev/null || echo "No static"
+              echo "Trying to manually create out from .next/export if exists:"
+              if [ -d ".next/export" ]; then
+                cp -r .next/export out
+                echo "✓ Created out from .next/export"
+              else
+                echo "No .next/export found either"
+                echo "Full .next structure:"
+                find .next -type d -maxdepth 2 2>/dev/null | head -20
+              fi
+            else
+              echo "No .next directory found"
+            fi
+            if [ ! -d "out" ]; then
+              echo "✗ Still no out directory after checks"
+              exit 1
+            fi
           fi
       
       - name: Setup Pages
