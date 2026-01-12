@@ -28,18 +28,18 @@ const sites: Project[] = [
     url: 'https://brawllife.shop/',
     type: 'site',
     image: 'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://brawllife.shop&size=64',
-    backgroundImage: '/image.png',
+    backgroundImage: '/info/image.png',
   },
   {
     name: 'Портфолио',
-    domain: 'nezeritov.pages.dev',
+    domain: 'hanjegoddamn.github.io',
     year: '2025-2026',
     description: 'Сайт моего портфолио с информацией о проектах, навыках и контактах.',
     accentColor: '#3b82f6',
     stack: ['TypeScript', 'Next.js', 'React', 'Tailwind CSS'],
-    url: 'https://nezeritov.pages.dev/',
+    url: 'https://hanjegoddamn.github.io/info/',
     type: 'site',
-    backgroundImage: '/image2.png',
+    backgroundImage: '/info/image2.png',
   },
 ]
 
