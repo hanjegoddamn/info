@@ -92,16 +92,16 @@ const Header = () => {
 
       {/* Логотип на десктопе (xl и выше) */}
       <div className="hidden xl:flex gap-4 items-center fixed top-16 left-24 smooth z-[150]">
-        <p className="text-white font-zed text-[14px]">
+        <a href="https://hanjegoddamn.github.io/info/" className="text-white font-zed text-[14px] hover:opacity-80 transition-opacity">
           nezeritov<span className="opacity-60">.space</span>
-        </p>
+        </a>
       </div>
 
       {/* Логотип на мобилке (lg и ниже) - по центру */}
       <div className="top-9 flex lg:hidden gap-4 items-center left-1/2 transform -translate-x-1/2 justify-center text-center fixed z-[150] smooth">
-        <p className="text-white font-zed text-[14px]">
+        <a href="https://hanjegoddamn.github.io/info/" className="text-white font-zed text-[14px] hover:opacity-80 transition-opacity">
           nezeritov<span className="opacity-60">.space</span>
-        </p>
+        </a>
       </div>
 
       {/* Навигация на десктопе (lg и выше) */}
